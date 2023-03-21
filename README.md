@@ -16,15 +16,15 @@ If you have the based tech mentioned before you would need to:
 
 1) Clone this reporitory
 2) Go to the folder in the console and run the command  ' mvn clean install ' 
-3) All the dependencies and libraries will be installed and it will be tested
-4) Run the command ' mvn spring-boot:run ' to initialize the web service
-5)Go to the browser and type: localhost:8080/primes/10 you will see a reponse. 
+3) All the dependencies and libraries will be installed and its unit test will run automatically
+4) After the project is build, run the command ' mvn spring-boot:run ' to initialize the web service
+5) Go to the browser and type: localhost:8080/primes/10 you will see a reponse in the content type that it is accepted.
 
-For choosing the algorithms you need to add the optional paramenter: 
-   - algorithm=1 for Brute Force
-   - algorithm=2 for Sieve of Erastosthene 
+For choosing the algorithms you need to add the optional parameter: 
+   - ?algorithm=1 for Brute Force
+   - ?algorithm=2 for Sieve of Erastosthene 
   
-The default in case another value of the parameter or no parameter is Square Root. 
+It is a default 'Square Root', in case another value of the parameter or no parameter.
 
 
 
