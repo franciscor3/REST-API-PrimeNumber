@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
 
-
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +20,22 @@ public class PrimeNumberController {
 	//It returns the same contentType that the request was made or accept representation
 	@GetMapping(value="/{number}")
 	public PrimesResponse getPrimeNumbers(@PathVariable int number, @RequestParam("algorithm")Optional<String> algorithmName){
-		ArrayList<Integer> result = new ArrayList<>();
 		
 		//Model of the response
+		PrimesResponse response = new PrimesResponse(number);
+		
+		//Call to the method to find the array of primes numbers
+		response = primes(number, algorithmName);
+			
+		return response;
+		
+	}
+
+	//this method is cacheable based on the initial number
+	@Cacheable("primesResponse")
+	private PrimesResponse primes(int number, Optional<String> algorithmName) {
+		
+		ArrayList<Integer> result = new ArrayList<>();
 		PrimesResponse response = new PrimesResponse(number);
 		
 		//simple case
@@ -73,12 +86,12 @@ public class PrimeNumberController {
 		}
 			
 		response.setPrimes(result);
-			
 		return response;
-		
 	}
 
 
+	//ALGORITHMS TO FIND IF A NUMBER IS PRIME OR NOT
+	
 	//Square Root algorithm
 	//I got this algorithm from https://www.geeksforgeeks.org/prime-numbers/
 	private boolean isPrime(int n) {
@@ -97,10 +110,15 @@ public class PrimeNumberController {
 
 	//Brute force; Less efficient algorithm to find Prime Numbers
 	private boolean bruteForceIsPrime(int n) {
-		for(int i=3; i<=n; i++) {
+		int counter = 1;
+		for(int i=2; i<=n; i++) {
 			if(n%i== 0) {
-				return false;
+				counter ++;
 			}
+		}
+		
+		if(counter > 2) {
+			return false;
 		}
 		return true;
 	}
